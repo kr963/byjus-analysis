@@ -1,0 +1,66 @@
+# Byju's Downfall Analysis
+# This notebook explores synthetic operational and financial data to uncover patterns
+# behind the decline of India's most prominent ed-tech startup.
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load data
+df = pd.read_csv('../data/byjus_data.csv')
+df['month'] = pd.to_datetime(df['month'])
+df.head()
+
+df.describe()
+
+plt.figure(figsize=(10, 5))
+sns.lineplot(x='month', y='active_users', data=df, marker='o')
+plt.title("Monthly Active Users")
+plt.xlabel("Month")
+plt.ylabel("Active Users")
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+#Share vs Revenue
+plt.figure(figsize=(10, 5))
+sns.lineplot(x='month', y='marketing_spend', data=df, label='Marketing Spend')
+sns.lineplot(x='month', y='revenue', data=df, label='Revenue')
+plt.title(" Marketing Spend vs Revenue")
+plt.xlabel("Month")
+plt.ylabel("USD ($)")
+plt.xticks(rotation=45)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 5))
+sns.lineplot(x='month', y='churn_rate', data=df, label='Churn Rate')
+sns.lineplot(x='month', y='refund_rate', data=df, label='Refund Rate')
+plt.title("Customer Churn & Refund Rate Over Time")
+plt.xlabel("Month")
+plt.ylabel("Rate")
+plt.xticks(rotation=45)
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 5))
+funded = df[df['funding_received'] > 0]
+plt.stem(funded['month'], funded['funding_received'], basefmt=" ", use_line_collection=True)
+plt.title("Funding Rounds Timeline")
+plt.xlabel("Month")
+plt.ylabel("Funding Received ($)")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Key Takeaways:
+print("""
+- Active users declined steadily while marketing spend increased, signaling inefficiency in growth strategy.
+- Revenue lagged behind spend, especially in the latter half.
+- Churn and refund rates showed a worrying upward trend.
+- Funding rounds appeared reactionary — often following performance dips.
+""")
+
